@@ -23,3 +23,7 @@ POST admin/results/<id>/publish/ -> result row. POST admin/offerings/ creates of
 Demo credentials: student `student` / `CampusDemo!2026`; second student `student2` / same; admin `admin` / `CampusAdmin!2026`. No production accounts or secrets. Fictional university brand Campus. Student display Aarif Rahman. Demo term Spring 2026, arbitrary demo policy no claim about Premier. Term time checks use current local date for registration window seed (-30,+90 days).
 
 Study uses separate fictional student accounts study_a/study_b (same demo password), same API authorization. Baseline/enhanced switch per local UI study preference, baseline hides charts/helper but retains textual summary + all pages. Every study participant starts fresh session; frontend /study offers mode and example accounts. No impersonation endpoint or weakening permissions.
+
+Additional admin collection: GET admin/invoices/ returns invoice rows as above, with student_id (display roll) and student_name, for the payment selector. POST retains the existing create behavior.
+
+Attendance clarification: sessions can also have status `unmarked`. Missing marks are excluded from the percentage denominator, not treated as absences. Summary includes `unmarked` count. Thus `held` means recorded present/absent sessions; cancelled and excused sessions are excluded. Published Result records retain a historical credit snapshot. Assigned curriculum requirements and course mappings are immutable; create a new curriculum version for future changes.

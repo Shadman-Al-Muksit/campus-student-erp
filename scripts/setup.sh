@@ -32,12 +32,16 @@ if [[ ! -x "$RUNTIME_ROOT/node/bin/node" ]]; then
 fi
 source "$PROJECT_ROOT/scripts/env.sh"
 if [[ ! -x "$RUNTIME_ROOT/venv/bin/python" ]]; then
-  python3 -m venv "$RUNTIME_ROOT/venv"
+  python3 -m venv --without-pip "$RUNTIME_ROOT/venv"
 fi
-python -m pip install -r "$PROJECT_ROOT/backend/requirements.txt"
-if [[ -f "$PROJECT_ROOT/research/requirements_research.txt" ]]; then
-  python -m pip install -r "$PROJECT_ROOT/research/requirements_research.txt"
+if ! python -m pip --version >/dev/null 2>&1; then
+  if ! python -m ensurepip --upgrade; then
+    # Some Ubuntu installations omit ensurepip. Bootstrap only this isolated venv.
+    curl -fsS --retry 2 https://bootstrap.pypa.io/get-pip.py -o "$RUNTIME_ROOT/downloads/get-pip.py"
+    python "$RUNTIME_ROOT/downloads/get-pip.py"
+  fi
 fi
+python -m pip install -r "$PROJECT_ROOT/requirements.lock.txt"
 bash "$PROJECT_ROOT/scripts/database.sh"
 cd "$PROJECT_ROOT/backend"
 python manage.py migrate --noinput
