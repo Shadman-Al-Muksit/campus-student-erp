@@ -1,5 +1,7 @@
 # Campus ERP checkpoint — 16 November 2026
 
+**Completion status: local first release complete; all 68 tests and the production build passed.** Final implementation commit `098e9a5e2580642a230a810de0e1e06f1fa38fe8` passed fresh Linux CI: https://github.com/Shadman-Al-Muksit/campus-student-erp/actions/runs/43857499804. Subsequent checkpoint edits are documentation only. Temporary verification app/database processes were stopped; start normally with `bash scripts/dev.sh`. No automatic continuation is scheduled.
+
 ## User intent
 
 Implement the approved independent portfolio ERP locally and publish all source, tests, documentation, and research materials to the user's public GitHub account. One fictional CSE program, English/Bangla, student/admin first, interactive progress charts and drill-downs, deterministic seven-topic navigation helper, exploratory usability study materials. Real university integration, faculty/accounts roles, hosting, and actual volunteer sessions are later work.
@@ -48,8 +50,8 @@ New English/Bangla login screenshots were captured and visually inspected. READM
 2. Start if needed: `bash scripts/dev.sh` in the WSL project folder; app http://localhost:5173, backend8000.
 3. Browser verification and screenshots are complete. Rerun only after relevant changes; commands are in README.
 4. This checkpoint commit saves implementation, README, screenshots, verification, startup/recovery, ignore, and checkpoint changes. Build metadata is untracked and ignored. Verify Git status before further work.
-5. Confirm final GitHub Actions status; do not report old green CI as checking a newer commit.
-6. Final response should link public repo, local README/learning guide, show the new login screenshot, provide startup/demo access, and distinguish prepared research from unperformed volunteer sessions.
+5. Final implementation CI is confirmed green (link above); future code changes need their own checks.
+6. The project is ready for demonstration. Actual usability sessions, public hosting, faculty/accounts roles, and other later milestones remain outside this completed release.
 
 ## Further work boundary
 

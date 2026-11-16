@@ -2,6 +2,8 @@
 
 Date: 16 November 2026 (Asia/Dhaka). Fictional local demonstration data only.
 
+Final implementation revision `098e9a5e2580642a230a810de0e1e06f1fa38fe8` passed [fresh Linux CI](https://github.com/Shadman-Al-Muksit/campus-student-erp/actions/runs/43857499804), including 41 backend, 19 research-tool, and 8 browser tests plus production build. The redesigned English/Bangla sign-in screens were captured and visually inspected. Later checkpoint edits are documentation only.
+
 | Check | Result |
 | --- | --- |
 | Django system checks | No issues |
