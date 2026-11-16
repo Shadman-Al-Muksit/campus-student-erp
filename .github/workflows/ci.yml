@@ -1,0 +1,59 @@
+name: Verify ERP
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: campus-ci-only
+          POSTGRES_DB: campus_erp
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      PGHOST: 127.0.0.1
+      PGPORT: '5432'
+      PGDATABASE: campus_erp
+      PGUSER: postgres
+      PGPASSWORD: campus-ci-only
+      DJANGO_DEBUG: '1'
+      DJANGO_SECRET_KEY: ci-only-random-development-key-not-for-deployment
+      DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1,testserver
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: pip install -r requirements.lock.txt
+      - run: python manage.py check && python manage.py makemigrations --check --dry-run && pytest -q
+        working-directory: backend
+      - run: python -m unittest discover -s research/tests -v
+      - run: npm ci && npm run build
+        working-directory: frontend
+      - run: python manage.py migrate --noinput && python manage.py seed_demo
+        working-directory: backend
+      - run: npx playwright install --with-deps chromium
+        working-directory: frontend
+      - run: |
+          python backend/manage.py runserver 127.0.0.1:8000 --noreload > /tmp/campus-backend.log 2>&1 &
+          cd frontend
+          npm run dev -- --host 127.0.0.1 --port 5173 --strictPort > /tmp/campus-frontend.log 2>&1 &
+          npx playwright test
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: browser-failure-details
+          path: frontend/test-results/
