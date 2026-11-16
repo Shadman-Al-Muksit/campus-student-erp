@@ -19,4 +19,5 @@ research/output/
 research/output*/
 research/local_data/
 *.log
+*.tsbuildinfo
 .DS_Store

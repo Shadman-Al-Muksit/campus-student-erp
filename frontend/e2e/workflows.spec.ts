@@ -24,6 +24,15 @@ test("student dashboard uses real records and opens matching progress categories
   await expect(
     page.getByRole("progressbar", { name: "Credit completion", exact: true }),
   ).toBeVisible();
+  expect(
+    await page
+      .locator(".stat > strong")
+      .evaluateAll((elements) =>
+        elements.every(
+          (element) => element.scrollWidth <= element.clientWidth + 1,
+        ),
+      ),
+  ).toBe(true);
   const dashboard = await page.request
     .get("/api/v1/me/dashboard/")
     .then((r) => r.json());
@@ -183,6 +192,12 @@ test("mobile navigation and charts stay within the viewport", async ({
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await login(page);
+  await expect(page.locator(".stats-grid .stat").first()).toBeVisible();
+  expect(
+    await page.locator(".stat > strong").evaluateAll((elements) =>
+      elements.every((element) => element.scrollWidth <= element.clientWidth + 1),
+    ),
+  ).toBe(true);
   await expect(
     page.getByRole("progressbar", { name: "Credit completion", exact: true }),
   ).toBeVisible();

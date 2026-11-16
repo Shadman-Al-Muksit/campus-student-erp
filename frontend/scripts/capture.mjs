@@ -47,6 +47,19 @@ async function capture(filename) {
   files.push(filename);
 }
 try {
+  await page.goto("/login");
+  await page
+    .getByRole("heading", { name: "Sign in to Campus", exact: true })
+    .waitFor();
+  await capture("login-en.png");
+  await page
+    .getByRole("button", { name: "Switch interface language", exact: true })
+    .click();
+  await page.waitForFunction(() => document.documentElement.lang === "bn");
+  await capture("login-bn.png");
+  await page
+    .getByRole("button", { name: "ইন্টারফেসের ভাষা বদলান", exact: true })
+    .click();
   await login("student");
   await page.locator(".recharts-wrapper").first().waitFor();
   await capture("dashboard-en.png");

@@ -18,6 +18,7 @@ This folder contains the reproducible materials for examining the combined inter
 Run these from the project root in the project's Python environment. See the [main README](../README.md) for setup.
 
 ```bash
+source scripts/env.sh
 python -m pip install -r research/requirements_research.txt
 mkdir -p research/local_data
 cp research/observations_template.csv research/local_data/observations.csv

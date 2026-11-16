@@ -9,6 +9,10 @@ if ! pg_ctl -D "$RUNTIME_ROOT/pgdata" status >/dev/null 2>&1; then
   pg_ctl -D "$RUNTIME_ROOT/pgdata" -l "$PROJECT_ROOT/.runtime/postgres.log" \
     -o "-p $PGPORT -h 127.0.0.1 -k $RUNTIME_ROOT/socket" -w start
 fi
-if [[ "$(psql -d postgres -Atc "SELECT 1 FROM pg_database WHERE datname = 'campus_erp'")" != '1' ]]; then
+database_exists="$(psql -d postgres --set=db_name="$PGDATABASE" -At <<'SQL'
+SELECT 1 FROM pg_database WHERE datname = :'db_name';
+SQL
+)"
+if [[ "$database_exists" != '1' ]]; then
   createdb "$PGDATABASE"
 fi

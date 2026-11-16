@@ -92,7 +92,15 @@ export function Stat({
         <span>{label}</span>
         <span className={`stat-icon ${tone}`}>{icon}</span>
       </div>
-      <strong>{value}</strong>
+      <strong
+        className={
+          typeof value === "string" && value.length > 9
+            ? "stat-long-value"
+            : undefined
+        }
+      >
+        {value}
+      </strong>
       <p>{sub}</p>
     </Card>
   );
